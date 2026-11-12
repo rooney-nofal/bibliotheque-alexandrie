@@ -1,0 +1,28 @@
+# ============================================================
+# requirements.txt - external libraries this project needs.
+# Install them all with:  pip install -r requirements.txt
+# Exact resolved versions are captured in requirements.lock.txt
+# ============================================================
+
+# --- Configuration and secrets ---
+pyyaml                  # reads config.yaml, our single settings file
+python-dotenv           # reads .env, where the API key lives (never committed)
+
+# --- Phase 1: collecting the documentation ---
+requests                # downloads pages from the web over HTTPS
+beautifulsoup4          # parses HTML pages into clean text
+
+# --- Phase 2: embeddings and the vector database ---
+sentence-transformers   # turns passages into vectors; pulls in PyTorch automatically
+chromadb                # the vector database that stores and searches those vectors
+
+# --- Phase 4: the language models ---
+openai                  # OpenRouter speaks the OpenAI protocol, so this client talks to it
+
+# --- Phase 7: the API ---
+fastapi                 # builds our REST API with the POST /question endpoint
+uvicorn                 # the server program that actually runs the FastAPI app
+
+# --- Phase 8: interface and statistics ---
+streamlit               # the simple web page where a student asks a question
+pandas                  # builds the evaluation tables and the statistics page

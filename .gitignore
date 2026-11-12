@@ -1,0 +1,26 @@
+# ============================================================
+# .gitignore - what Git must never record or send to GitHub
+# In this file, a comment MUST start its own line.
+# ============================================================
+
+# --- Secrets: the brief forbids any key in the repository ---
+# .env will hold our real API key - never committed
+.env
+
+# --- Python environment: rebuildable by anyone, too heavy for Git ---
+# our private Python copy and all installed libraries
+.venv/
+# folders where Python drops compiled bytecode files
+__pycache__/
+# the compiled bytecode files themselves
+*.pyc
+
+# --- Project data: rebuilt by our scripts, so not stored in Git ---
+# # downloaded pages and the chunks made from them 
+data/
+# the vector database files that indexing creates
+chroma_db/
+
+# --- Editor noise ---
+# VS Code's personal settings for this machine
+.vscode/

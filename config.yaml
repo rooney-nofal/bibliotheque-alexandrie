@@ -1,0 +1,42 @@
+# ============================================================
+# config.yaml - every setting of the assistant lives here.
+# The brief requires the assistant to stay independent of its
+# corpus. Swapping the knowledge base must mean editing this
+# file, never the code. Values are null until the phase that
+# decides them, with the reason recorded in the README.
+# ============================================================
+
+corpus:                                      # which documentation we answer from
+  name: "fastapi"                            # our chosen tool, among the five the brief allows
+  base_url: "https://fastapi.tiangolo.com/"  # where its official pages live
+  raw_dir: "data/raw"                        # folder where downloaded pages are saved
+  processed_dir: "data/processed"            # folder where the chunks are written
+  manifest: "corpus_manifest.json"           # committed list of every page, its URL and date
+
+chunking:                                    # how documents are cut into passages
+  sizes_to_test: [500, 1000]                 # the two sizes the brief asks us to compare
+  overlap: 100                               # characters repeated between neighbours, so ideas are not cut in half
+  chosen: null                               # Phase 3 sets this, based on the measured score
+
+embeddings:                                  # the model that turns text into numbers
+  model: null                                # Phase 2 chooses a multilingual open-source model
+  device: "cpu"                              # run on the processor; no graphics card needed
+
+vector_store:                                # where the vectors are kept
+  provider: "chroma"                         # Chroma, one of the two options in the brief
+  path: "chroma_db"                          # folder holding the database on disk
+  collection: "fastapi_docs"                 # name of the collection inside it
+
+retrieval:                                   # how passages are found at question time
+  top_k: 3                                   # how many passages we fetch; the brief measures the top 3
+  min_similarity: null                       # Phase 5 sets the refusal threshold
+
+llm:                                         # the model that writes the answer
+  provider: null                             # Phase 4 compares a local model with OpenRouter
+  model: null                                # Phase 4 sets the exact model name
+  temperature: 0.0                           # 0 means the most predictable answer, not a creative one
+  max_tokens: 600                            # longest answer we allow, to control cost and rambling
+
+cache:                                       # the brief asks for a response cache
+  enabled: true                              # on by default
+  path: "data/cache.sqlite"                  # stored in data/, which Git ignores
