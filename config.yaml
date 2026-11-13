@@ -8,7 +8,25 @@
 
 corpus:                                      # which documentation we answer from
   name: "fastapi"                            # our chosen tool, among the five the brief allows
-  base_url: "https://fastapi.tiangolo.com/"  # where its official pages live
+  base_url: "https://fastapi.tiangolo.com/"  # the public site, used for the citation links
+  nav_url: "https://raw.githubusercontent.com/fastapi/fastapi/master/docs/en/mkdocs.yml"  # the site's own navigation file
+  source_base: "https://raw.githubusercontent.com/fastapi/fastapi/master/docs/en/docs/"   # where the Markdown sources live
+  repo_raw_base: "https://raw.githubusercontent.com/fastapi/fastapi/master/"              # where the code examples live
+  exclude_sections: ["reference"]            # auto-generated API dumps; dense and bad for retrieval
+  exclude_pages:                             # community and meta pages, not technical documentation
+    - "release-notes.md"                     # the full changelog, enormous and repetitive
+    - "fastapi-people.md"                    # the list of contributors
+    - "help-fastapi.md"                      # how to support the project
+    - "contributing.md"                      # how to contribute to FastAPI itself
+    - "translations.md"                      # translation guidelines
+    - "external-links.md"                    # a list of third-party links
+    - "newsletter.md"                        # newsletter signup
+    - "management.md"                        # project governance
+    - "project-generation.md"                # links to project templates
+  min_pages: 30                              # the brief's minimum; the script fails loudly below it
+  min_page_characters: 300                   # below this a page is a navigation stub, not content
+  request_delay_seconds: 0.5                 # pause between pages, to be polite to the server
+  user_agent: "bibliotheque-alexandrie-bot/1.0 (student project)"  # identifies our script honestly
   raw_dir: "data/raw"                        # folder where downloaded pages are saved
   processed_dir: "data/processed"            # folder where the chunks are written
   manifest: "corpus_manifest.json"           # committed list of every page, its URL and date

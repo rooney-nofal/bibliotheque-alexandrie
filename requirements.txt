@@ -10,7 +10,7 @@ python-dotenv           # reads .env, where the API key lives (never committed)
 
 # --- Phase 1: collecting the documentation ---
 requests                # downloads pages from the web over HTTPS
-beautifulsoup4          # parses HTML pages into clean text
+
 
 # --- Phase 2: embeddings and the vector database ---
 sentence-transformers   # turns passages into vectors; pulls in PyTorch automatically
