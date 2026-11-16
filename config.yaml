@@ -32,13 +32,16 @@ corpus:                                      # which documentation we answer fro
   manifest: "corpus_manifest.json"           # committed list of every page, its URL and date
 
 chunking:                                    # how documents are cut into passages
-  sizes_to_test: [500, 1000]                 # the two sizes the brief asks us to compare
+  sizes_to_test: [500, 1500]                 # the two sizes the brief asks us to compare
   overlap: 100                               # characters repeated between neighbours, so ideas are not cut in half
   chosen: null                               # Phase 3 sets this, based on the measured score
 
 embeddings:                                  # the model that turns text into numbers
-  model: null                                # Phase 2 chooses a multilingual open-source model
+  model: "intfloat/multilingual-e5-base"     # open source, MIT licence, built for cross-language search
   device: "cpu"                              # run on the processor; no graphics card needed
+  query_prefix: "query: "                    # the prefix this model expects on a question
+  passage_prefix: "passage: "                # the prefix it expects on a document passage
+  batch_size: 16                             # how many passages to process at once, to limit memory use
 
 vector_store:                                # where the vectors are kept
   provider: "chroma"                         # Chroma, one of the two options in the brief
