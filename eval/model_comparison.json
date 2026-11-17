@@ -1,0 +1,250 @@
+{
+  "chunk_size": 1500,
+  "prompt_version": "v1",
+  "summary": {
+    "openrouter": {
+      "average_seconds": 2.54,
+      "average_answer_characters": 438,
+      "answers": 5,
+      "failures": 0
+    },
+    "local": {
+      "average_seconds": 34.57,
+      "average_answer_characters": 15,
+      "answers": 5,
+      "failures": 0
+    }
+  },
+  "details": [
+    {
+      "id": "q01",
+      "question": "Comment récupérer un paramètre dans l'URL comme /items/42 ?",
+      "prompt_characters": 2713,
+      "results": {
+        "openrouter": {
+          "model": "anthropic/claude-haiku-5.5",
+          "seconds": 4.04,
+          "cached": false,
+          "usage": {
+            "prompt_tokens": 1093,
+            "completion_tokens": 434,
+            "total_tokens": 1527,
+            "cost": 0,
+            "is_byok": true,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "cache_write_tokens": 0,
+              "audio_tokens": 0,
+              "video_tokens": 0
+            },
+            "cost_details": {
+              "upstream_inference_cost": 0.0003263,
+              "upstream_inference_prompt_cost": 0.0001093,
+              "upstream_inference_completions_cost": 0.000217
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 277,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            }
+          },
+          "answer": "Dans le passage [1], le chemin de la route contient `{item_id}` et la fonction déclare un argument du même nom :\n\n```python\n@app.get(\"/items/{item_id}\")\nasync def read_user_item(item_id: str, ...):\n```\n\nAinsi, pour `/items/42`, la valeur `item_id` est récupérée depuis l'URL. Le passage [1] ne précise pas davantage son fonctionnement (conversion de type, par exemple). [1]"
+        },
+        "local": {
+          "model": "Qwen/Qwen3-0.6B",
+          "seconds": 31.37,
+          "cached": false,
+          "usage": {
+            "prompt_tokens": 776,
+            "completion_tokens": 6
+          },
+          "answer": "Je ne sais pas."
+        }
+      }
+    },
+    {
+      "id": "q02",
+      "question": "Comment déclarer un paramètre de requête optionnel ?",
+      "prompt_characters": 3317,
+      "results": {
+        "openrouter": {
+          "model": "anthropic/claude-haiku-5.5",
+          "seconds": 1.56,
+          "cached": false,
+          "usage": {
+            "prompt_tokens": 1258,
+            "completion_tokens": 192,
+            "total_tokens": 1450,
+            "cost": 0,
+            "is_byok": true,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "cache_write_tokens": 0,
+              "audio_tokens": 0,
+              "video_tokens": 0
+            },
+            "cost_details": {
+              "upstream_inference_cost": 0.0002218,
+              "upstream_inference_prompt_cost": 0.0001258,
+              "upstream_inference_completions_cost": 9.6e-05
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            }
+          },
+          "answer": "Pour déclarer un paramètre de requête optionnel, il suffit de lui donner la valeur par défaut `None` (par exemple `q: str | None = None`). FastAPI reconnaît alors automatiquement qu'il s'agit d'un paramètre de requête, et non de chemin, si son nom n'apparaît pas dans le chemin [1].\n\nPour un groupe de paramètres optionnels, on déclare un modèle Pydantic avec `| None` et une valeur par défaut `None` (avec `Query()` pour les paramètres de requête) [3]."
+        },
+        "local": {
+          "model": "Qwen/Qwen3-0.6B",
+          "seconds": 33.41,
+          "cached": false,
+          "usage": {
+            "prompt_tokens": 811,
+            "completion_tokens": 6
+          },
+          "answer": "Je ne sais pas."
+        }
+      }
+    },
+    {
+      "id": "q03",
+      "question": "Comment envoyer des données JSON dans le corps d'une requête ?",
+      "prompt_characters": 4115,
+      "results": {
+        "openrouter": {
+          "model": "anthropic/claude-haiku-5.5",
+          "seconds": 1.59,
+          "cached": false,
+          "usage": {
+            "prompt_tokens": 1559,
+            "completion_tokens": 156,
+            "total_tokens": 1715,
+            "cost": 0,
+            "is_byok": true,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "cache_write_tokens": 0,
+              "audio_tokens": 0,
+              "video_tokens": 0
+            },
+            "cost_details": {
+              "upstream_inference_cost": 0.0002339,
+              "upstream_inference_prompt_cost": 0.0001559,
+              "upstream_inference_completions_cost": 7.8e-05
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            }
+          },
+          "answer": "Selon le passage [2], pour envoyer un corps JSON avec `httpx` ou le `TestClient`, on passe un objet Python (par exemple un `dict`) au paramètre `json` [2].\n\nPar ailleurs, si l'on utilise un modèle Pydantic, il faut d'abord le convertir avec `jsonable_encoder`, car le `TestClient` reçoit des données convertibles en JSON et non des modèles Pydantic [2]."
+        },
+        "local": {
+          "model": "Qwen/Qwen3-0.6B",
+          "seconds": 44.28,
+          "cached": false,
+          "usage": {
+            "prompt_tokens": 1060,
+            "completion_tokens": 6
+          },
+          "answer": "Je ne sais pas."
+        }
+      }
+    },
+    {
+      "id": "q04",
+      "question": "Comment imposer une longueur minimale à un paramètre de requête ?",
+      "prompt_characters": 2160,
+      "results": {
+        "openrouter": {
+          "model": "anthropic/claude-haiku-5.5",
+          "seconds": 1.73,
+          "cached": false,
+          "usage": {
+            "prompt_tokens": 855,
+            "completion_tokens": 171,
+            "total_tokens": 1026,
+            "cost": 0,
+            "is_byok": true,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "cache_write_tokens": 0,
+              "audio_tokens": 0,
+              "video_tokens": 0
+            },
+            "cost_details": {
+              "upstream_inference_cost": 0.000171,
+              "upstream_inference_prompt_cost": 8.55e-05,
+              "upstream_inference_completions_cost": 8.55e-05
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            }
+          },
+          "answer": "Pour imposer une longueur minimale à un paramètre de requête, on ajoute `min_length` dans `Query(...)`, à l'intérieur de `Annotated` [1]. Par exemple : `q: Annotated[str | None, Query(min_length=3, max_length=50)] = None` [1].\n\nOn peut aussi combiner `min_length` avec une valeur par défaut autre que `None`, par exemple `q: Annotated[str, Query(min_length=3)] = \"fixedquery\"` [2]."
+        },
+        "local": {
+          "model": "Qwen/Qwen3-0.6B",
+          "seconds": 23.76,
+          "cached": false,
+          "usage": {
+            "prompt_tokens": 558,
+            "completion_tokens": 6
+          },
+          "answer": "Je ne sais pas."
+        }
+      }
+    },
+    {
+      "id": "q05",
+      "question": "Comment renvoyer une erreur 404 au client ?",
+      "prompt_characters": 3039,
+      "results": {
+        "openrouter": {
+          "model": "anthropic/claude-haiku-5.5",
+          "seconds": 3.77,
+          "cached": false,
+          "usage": {
+            "prompt_tokens": 1146,
+            "completion_tokens": 576,
+            "total_tokens": 1722,
+            "cost": 0,
+            "is_byok": true,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "cache_write_tokens": 0,
+              "audio_tokens": 0,
+              "video_tokens": 0
+            },
+            "cost_details": {
+              "upstream_inference_cost": 0.0004026,
+              "upstream_inference_prompt_cost": 0.0001146,
+              "upstream_inference_completions_cost": 0.000288
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 322,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            }
+          },
+          "answer": "Les passages indiquent qu'une erreur 404 correspond à un code HTTP de la plage 400-499, signalant une erreur côté client [1]. Le passage [2] s'intitule « Use `HTTPException` » et montre le résultat : pour un élément inexistant, le client reçoit un code 404 et le JSON `{\"detail\": \"Item not found\"}` [2]. Le paramètre `detail` peut contenir n'importe quelle valeur convertible en JSON, pas seulement une chaîne [2].\n\nPour les chemins du frontend manquants, une page `404.html` peut être servie avec un code 404 conservé [3].\n\nLes passages ne contiennent pas le code exact permettant de lever une `HTTPException` avec un statut 404."
+        },
+        "local": {
+          "model": "Qwen/Qwen3-0.6B",
+          "seconds": 40.01,
+          "cached": false,
+          "usage": {
+            "prompt_tokens": 802,
+            "completion_tokens": 6
+          },
+          "answer": "Je ne sais pas."
+        }
+      }
+    }
+  ]
+}
