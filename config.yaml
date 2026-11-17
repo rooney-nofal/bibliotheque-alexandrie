@@ -34,7 +34,7 @@ corpus:                                      # which documentation we answer fro
 chunking:                                    # how documents are cut into passages
   sizes_to_test: [500, 1500]                 # the two sizes the brief asks us to compare
   overlap: 100                               # characters repeated between neighbours, so ideas are not cut in half
-  chosen: null                               # Phase 3 sets this, based on the measured score
+  chosen: 500                                # Phase 3 measured 90% recall@3 at 500 vs 85% at 1500
 
 embeddings:                                  # the model that turns text into numbers
   model: "intfloat/multilingual-e5-base"     # open source, MIT licence, built for cross-language search

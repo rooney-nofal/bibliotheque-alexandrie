@@ -1,0 +1,22 @@
+[
+  {"id": "q01", "question": "Comment récupérer un paramètre dans l'URL comme /items/42 ?", "expected_url": "https://fastapi.tiangolo.com/tutorial/path-params/"},
+  {"id": "q02", "question": "Comment déclarer un paramètre de requête optionnel ?", "expected_url": "https://fastapi.tiangolo.com/tutorial/query-params/"},
+  {"id": "q03", "question": "Comment envoyer des données JSON dans le corps d'une requête ?", "expected_url": "https://fastapi.tiangolo.com/tutorial/body/"},
+  {"id": "q04", "question": "Comment imposer une longueur minimale à un paramètre de requête ?", "expected_url": "https://fastapi.tiangolo.com/tutorial/query-params-str-validations/"},
+  {"id": "q05", "question": "Comment renvoyer une erreur 404 au client ?", "expected_url": "https://fastapi.tiangolo.com/tutorial/handling-errors/"},
+  {"id": "q06", "question": "Comment changer le code de statut HTTP renvoyé par une route ?", "expected_url": "https://fastapi.tiangolo.com/tutorial/response-status-code/"},
+  {"id": "q07", "question": "Comment recevoir un fichier envoyé par l'utilisateur ?", "expected_url": "https://fastapi.tiangolo.com/tutorial/request-files/"},
+  {"id": "q08", "question": "Comment lire les champs d'un formulaire HTML ?", "expected_url": "https://fastapi.tiangolo.com/tutorial/request-forms/"},
+  {"id": "q09", "question": "Comment partager du code entre plusieurs routes avec une dépendance ?", "expected_url": "https://fastapi.tiangolo.com/tutorial/dependencies/"},
+  {"id": "q10", "question": "Comment protéger une route avec un jeton JWT ?", "expected_url": "https://fastapi.tiangolo.com/tutorial/security/oauth2-jwt/"},
+  {"id": "q11", "question": "Comment autoriser un site web d'une autre origine à appeler mon API ?", "expected_url": "https://fastapi.tiangolo.com/tutorial/cors/"},
+  {"id": "q12", "question": "Comment exécuter une tâche après avoir renvoyé la réponse ?", "expected_url": "https://fastapi.tiangolo.com/tutorial/background-tasks/"},
+  {"id": "q13", "question": "Comment écrire des tests automatiques pour mon application ?", "expected_url": "https://fastapi.tiangolo.com/tutorial/testing/"},
+  {"id": "q14", "question": "Comment organiser une grosse application en plusieurs fichiers ?", "expected_url": "https://fastapi.tiangolo.com/tutorial/bigger-applications/"},
+  {"id": "q15", "question": "Comment servir des fichiers statiques comme des images ?", "expected_url": "https://fastapi.tiangolo.com/tutorial/static-files/"},
+  {"id": "q16", "question": "Comment connecter mon application à une base de données SQL ?", "expected_url": "https://fastapi.tiangolo.com/tutorial/sql-databases/"},
+  {"id": "q17", "question": "Comment ajouter un middleware exécuté à chaque requête ?", "expected_url": "https://fastapi.tiangolo.com/tutorial/middleware/"},
+  {"id": "q18", "question": "Comment limiter les champs renvoyés dans la réponse ?", "expected_url": "https://fastapi.tiangolo.com/tutorial/response-model/"},
+  {"id": "q19", "question": "Quelle est la différence entre def et async def pour une route ?", "expected_url": "https://fastapi.tiangolo.com/async/"},
+  {"id": "q20", "question": "Comment lire un en-tête HTTP personnalisé ?", "expected_url": "https://fastapi.tiangolo.com/tutorial/header-params/"}
+]
