@@ -47,7 +47,7 @@ def get(config: dict, key: str) -> str | None:                 # looks for an an
 
 def put(config: dict, key: str, provider: str, model: str, prompt: str, answer: str) -> None:
     """Store one answer so the next identical question costs nothing."""
-    if not config["cache"]["enabled"]:                         # if the cache is off
+    if not config["cache"]["enabled"] or not answer:           # cache off, or nothing worth storing
         return                                                 # store nothing
     with _connect(config) as connection:                       # open the database
         connection.execute(                                    # write the row, replacing any older one

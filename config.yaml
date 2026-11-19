@@ -54,7 +54,7 @@ vector_store:                                # where the vectors are kept
 
 retrieval:                                   # how passages are found at question time
   top_k: 3                                   # how many passages we fetch; the brief measures the top 3
-  min_similarity: null                       # Phase 5 sets the refusal threshold
+  min_similarity: 0.81                       # Phase 5: refuses u02/u04/u05 before any API call; u01/u03 pass to the model, which judges content
 
 
 llm:                                         # the model that writes the answer
@@ -64,7 +64,8 @@ llm:                                         # the model that writes the answer
   max_tokens: 600                            # longest answer we allow, to control cost and rambling
   timeout_seconds: 60                        # give up on a single request after this long
   max_retries: 3                             # how many times to retry a rate limit or server error
-  local_model: "Qwen/Qwen3-0.6B"             # small open model, strong French for its size, runs on CPU
+  local_model: "Qwen/Qwen3-0.6B"    
+  reasoning: false                           # do not spend the token budget on internal reasoning; we want the answer         # small open model, strong French for its size, runs on CPU
 
 
 cache:                                       # the brief asks for a response cache

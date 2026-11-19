@@ -1,0 +1,134 @@
+{
+  "chunk_size": 1500,
+  "answerable": [
+    {
+      "id": "q01",
+      "similarity": 0.8545,
+      "url": "https://fastapi.tiangolo.com/tutorial/query-params/"
+    },
+    {
+      "id": "q02",
+      "similarity": 0.8369,
+      "url": "https://fastapi.tiangolo.com/tutorial/query-params/"
+    },
+    {
+      "id": "q03",
+      "similarity": 0.8501,
+      "url": "https://fastapi.tiangolo.com/advanced/openapi-callbacks/"
+    },
+    {
+      "id": "q04",
+      "similarity": 0.838,
+      "url": "https://fastapi.tiangolo.com/tutorial/query-params-str-validations/"
+    },
+    {
+      "id": "q05",
+      "similarity": 0.8453,
+      "url": "https://fastapi.tiangolo.com/tutorial/handling-errors/"
+    },
+    {
+      "id": "q06",
+      "similarity": 0.8341,
+      "url": "https://fastapi.tiangolo.com/advanced/response-change-status-code/"
+    },
+    {
+      "id": "q07",
+      "similarity": 0.8359,
+      "url": "https://fastapi.tiangolo.com/tutorial/request-files/"
+    },
+    {
+      "id": "q08",
+      "similarity": 0.8244,
+      "url": "https://fastapi.tiangolo.com/tutorial/request-form-models/"
+    },
+    {
+      "id": "q09",
+      "similarity": 0.8433,
+      "url": "https://fastapi.tiangolo.com/advanced/advanced-dependencies/"
+    },
+    {
+      "id": "q10",
+      "similarity": 0.8196,
+      "url": "https://fastapi.tiangolo.com/tutorial/security/oauth2-jwt/"
+    },
+    {
+      "id": "q11",
+      "similarity": 0.8416,
+      "url": "https://fastapi.tiangolo.com/tutorial/cors/"
+    },
+    {
+      "id": "q12",
+      "similarity": 0.8334,
+      "url": "https://fastapi.tiangolo.com/tutorial/background-tasks/"
+    },
+    {
+      "id": "q13",
+      "similarity": 0.8395,
+      "url": "https://fastapi.tiangolo.com/tutorial/testing/"
+    },
+    {
+      "id": "q14",
+      "similarity": 0.8577,
+      "url": "https://fastapi.tiangolo.com/tutorial/bigger-applications/"
+    },
+    {
+      "id": "q15",
+      "similarity": 0.8437,
+      "url": "https://fastapi.tiangolo.com/tutorial/static-files/"
+    },
+    {
+      "id": "q16",
+      "similarity": 0.8496,
+      "url": "https://fastapi.tiangolo.com/tutorial/sql-databases/"
+    },
+    {
+      "id": "q17",
+      "similarity": 0.8673,
+      "url": "https://fastapi.tiangolo.com/tutorial/middleware/"
+    },
+    {
+      "id": "q18",
+      "similarity": 0.8269,
+      "url": "https://fastapi.tiangolo.com/tutorial/response-model/"
+    },
+    {
+      "id": "q19",
+      "similarity": 0.8539,
+      "url": "https://fastapi.tiangolo.com/tutorial/dependencies/"
+    },
+    {
+      "id": "q20",
+      "similarity": 0.8253,
+      "url": "https://fastapi.tiangolo.com/advanced/stream-data/"
+    }
+  ],
+  "unanswerable": [
+    {
+      "id": "u01",
+      "similarity": 0.8306,
+      "url": "https://fastapi.tiangolo.com/tutorial/"
+    },
+    {
+      "id": "u02",
+      "similarity": 0.8082,
+      "url": "https://fastapi.tiangolo.com/ai-development/"
+    },
+    {
+      "id": "u03",
+      "similarity": 0.8246,
+      "url": "https://fastapi.tiangolo.com/tutorial/path-params/"
+    },
+    {
+      "id": "u04",
+      "similarity": 0.7422,
+      "url": "https://fastapi.tiangolo.com/"
+    },
+    {
+      "id": "u05",
+      "similarity": 0.79,
+      "url": "https://fastapi.tiangolo.com/advanced/stream-data/"
+    }
+  ],
+  "lowest_answerable": 0.8196,
+  "highest_unanswerable": 0.8306
+}

@@ -1,0 +1,7 @@
+[
+  {"id": "u01", "question": "Comment installer PostgreSQL sur Ubuntu ?", "why": "database administration, not covered by the FastAPI documentation"},
+  {"id": "u02", "question": "Comment créer une nouvelle branche avec Git ?", "why": "Git usage, a different tool entirely"},
+  {"id": "u03", "question": "Comment entraîner un modèle de classification avec scikit-learn ?", "why": "machine learning library, outside this corpus"},
+  {"id": "u04", "question": "Quelle est la capitale de l'Australie ?", "why": "general knowledge, nothing to do with software"},
+  {"id": "u05", "question": "Combien coûte un abonnement GitHub Copilot par mois ?", "why": "commercial pricing, not technical documentation"}
+]

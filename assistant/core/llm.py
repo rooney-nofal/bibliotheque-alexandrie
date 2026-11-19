@@ -30,9 +30,11 @@ def _call_openrouter(settings: dict, prompt: str) -> tuple[str, dict]:
         "model": settings["model"],                            # which model, from config.yaml
         "messages": [{"role": "user", "content": prompt}],     # the prompt itself
         "temperature": settings["temperature"],                # 0 means the most predictable answer
-        "max_tokens": settings["max_tokens"],                  # the longest answer we allow
+        "max_tokens": settings["max_tokens"],                  # the budget for reasoning AND answer together
     }
-    wait = 2.0                                                 # seconds to wait before the next try
+    if not settings.get("reasoning", False):                   # unless config asks for internal reasoning
+        payload["reasoning"] = {"enabled": False}              # switch it off, so the budget goes to the answer
+    wait = 2.0                                                 # seconds to wait before the next try                                                # seconds to wait before the next try
     last_error = ""                                            # what went wrong most recently
     for attempt in range(1, settings["max_retries"] + 1):      # try a few times before giving up
         try:                                                   # the network itself can fail
@@ -42,9 +44,17 @@ def _call_openrouter(settings: dict, prompt: str) -> tuple[str, dict]:
             time.sleep(wait)                                   # wait before trying again
             wait *= 2                                          # and wait twice as long next time
             continue                                           # try again
-        if response.status_code == 200:                        # success
+        if response.status_code == 200:                        # the request itself succeeded
             body = response.json()                             # read the reply
-            return body["choices"][0]["message"]["content"], body.get("usage", {})   # the text, and token counts
+            choices = body.get("choices") or []                # the answers the model produced
+            if not choices:                                    # a 200 with no answer at all
+                raise LLMError(f"response contained no choices: {str(body)[:300]}")
+            message = choices[0].get("message") or {}          # the first answer
+            content = message.get("content")                   # the text we actually want
+            reason = choices[0].get("finish_reason")           # why the model stopped
+            if not content:                                    # empty or missing text, which does happen
+                raise LLMError(f"model returned an empty answer (finish_reason={reason}, fields={sorted(message)})")
+            return content, body.get("usage", {})              # the text, and the token counts
         if response.status_code in RETRY_STATUS:               # a rate limit or a server problem
             last_error = f"HTTP {response.status_code}: {response.text[:200]}"       # remember why
             print(f"  retry {attempt}/{settings['max_retries']} after {last_error}") # tell the user we are waiting
