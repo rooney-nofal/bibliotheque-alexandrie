@@ -75,4 +75,4 @@ cache:                                       # the brief asks for a response cac
 
 prompt:                                      # the instructions sent with every question
   dir: "prompts"                             # folder holding the versions, tracked in Git as the brief requires
-  version: "v1"                              # which version is in use; Phase 5 adds v2 and compares them
+  version: "v2"                              # Phase 6: v2 refused 1 real question but every answer it gave was cited (19/19 vs 19/20)

@@ -1,0 +1,1136 @@
+{
+  "summary": {
+    "v1": {
+      "correct_refusals": "5/5",
+      "wrong_refusals": "0/20",
+      "answers_with_valid_citation": "19/20",
+      "answers_with_invented_citation": 0,
+      "average_seconds": 1.33,
+      "failures": 0
+    },
+    "v2": {
+      "correct_refusals": "5/5",
+      "wrong_refusals": "1/20",
+      "answers_with_valid_citation": "19/19",
+      "answers_with_invented_citation": 0,
+      "average_seconds": 1.75,
+      "failures": 0
+    }
+  },
+  "details": {
+    "v1": [
+      {
+        "id": "q01",
+        "question": "Comment récupérer un paramètre dans l'URL comme /items/42 ?",
+        "should_answer": true,
+        "refused": false,
+        "refused_by": null,
+        "correct_decision": true,
+        "citations": {
+          "found": [
+            1
+          ],
+          "valid": [
+            1
+          ],
+          "invalid": []
+        },
+        "warnings": [],
+        "seconds": 0.07,
+        "cached": true,
+        "answer": "Dans le passage [1], le chemin de la route contient `{item_id}` et la fonction déclare un argument du même nom :\n\n```python\n@app.get(\"/items/{item_id}\")\nasync def read_user_item(item_id: str, ...):\n```\n\nAinsi, pour `/items/42`, la valeur `item_id` est récupérée depuis l'URL. Le passage [1] ne précise pas davantage son fonctionnement (conversion de type, par exemple). [1]"
+      },
+      {
+        "id": "q02",
+        "question": "Comment déclarer un paramètre de requête optionnel ?",
+        "should_answer": true,
+        "refused": false,
+        "refused_by": null,
+        "correct_decision": true,
+        "citations": {
+          "found": [
+            1,
+            3
+          ],
+          "valid": [
+            1,
+            3
+          ],
+          "invalid": []
+        },
+        "warnings": [],
+        "seconds": 0.035,
+        "cached": true,
+        "answer": "Pour déclarer un paramètre de requête optionnel, il suffit de lui donner la valeur par défaut `None` (par exemple `q: str | None = None`). FastAPI reconnaît alors automatiquement qu'il s'agit d'un paramètre de requête, et non de chemin, si son nom n'apparaît pas dans le chemin [1].\n\nPour un groupe de paramètres optionnels, on déclare un modèle Pydantic avec `| None` et une valeur par défaut `None` (avec `Query()` pour les paramètres de requête) [3]."
+      },
+      {
+        "id": "q03",
+        "question": "Comment envoyer des données JSON dans le corps d'une requête ?",
+        "should_answer": true,
+        "refused": false,
+        "refused_by": null,
+        "correct_decision": true,
+        "citations": {
+          "found": [
+            2
+          ],
+          "valid": [
+            2
+          ],
+          "invalid": []
+        },
+        "warnings": [],
+        "seconds": 0.038,
+        "cached": true,
+        "answer": "Selon le passage [2], pour envoyer un corps JSON avec `httpx` ou le `TestClient`, on passe un objet Python (par exemple un `dict`) au paramètre `json` [2].\n\nPar ailleurs, si l'on utilise un modèle Pydantic, il faut d'abord le convertir avec `jsonable_encoder`, car le `TestClient` reçoit des données convertibles en JSON et non des modèles Pydantic [2]."
+      },
+      {
+        "id": "q04",
+        "question": "Comment imposer une longueur minimale à un paramètre de requête ?",
+        "should_answer": true,
+        "refused": false,
+        "refused_by": null,
+        "correct_decision": true,
+        "citations": {
+          "found": [
+            1,
+            2
+          ],
+          "valid": [
+            1,
+            2
+          ],
+          "invalid": []
+        },
+        "warnings": [],
+        "seconds": 0.039,
+        "cached": true,
+        "answer": "Pour imposer une longueur minimale à un paramètre de requête, on ajoute `min_length` dans `Query(...)`, à l'intérieur de `Annotated` [1]. Par exemple : `q: Annotated[str | None, Query(min_length=3, max_length=50)] = None` [1].\n\nOn peut aussi combiner `min_length` avec une valeur par défaut autre que `None`, par exemple `q: Annotated[str, Query(min_length=3)] = \"fixedquery\"` [2]."
+      },
+      {
+        "id": "q05",
+        "question": "Comment renvoyer une erreur 404 au client ?",
+        "should_answer": true,
+        "refused": false,
+        "refused_by": null,
+        "correct_decision": true,
+        "citations": {
+          "found": [
+            1,
+            2,
+            3
+          ],
+          "valid": [
+            1,
+            2,
+            3
+          ],
+          "invalid": []
+        },
+        "warnings": [],
+        "seconds": 0.035,
+        "cached": true,
+        "answer": "Les passages indiquent qu'une erreur 404 correspond à un code HTTP de la plage 400-499, signalant une erreur côté client [1]. Le passage [2] s'intitule « Use `HTTPException` » et montre le résultat : pour un élément inexistant, le client reçoit un code 404 et le JSON `{\"detail\": \"Item not found\"}` [2]. Le paramètre `detail` peut contenir n'importe quelle valeur convertible en JSON, pas seulement une chaîne [2].\n\nPour les chemins du frontend manquants, une page `404.html` peut être servie avec un code 404 conservé [3].\n\nLes passages ne contiennent pas le code exact permettant de lever une `HTTPException` avec un statut 404."
+      },
+      {
+        "id": "q06",
+        "question": "Comment changer le code de statut HTTP renvoyé par une route ?",
+        "should_answer": true,
+        "refused": false,
+        "refused_by": null,
+        "correct_decision": true,
+        "citations": {
+          "found": [
+            2,
+            1,
+            3
+          ],
+          "valid": [
+            2,
+            1,
+            3
+          ],
+          "invalid": []
+        },
+        "warnings": [],
+        "seconds": 2.459,
+        "cached": false,
+        "answer": "Pour changer le code de statut HTTP renvoyé par une route, déclarez un paramètre de type `Response` dans la fonction de chemin, puis modifiez son attribut `status_code` [2]. FastAPI utilisera cet objet temporaire pour définir le code de statut de la réponse finale, tout en appliquant le `response_model` éventuel [2].\n\nExemple :\n\n```python\n@app.put(\"/get-or-create-task/{task_id}\", status_code=200)\ndef get_or_create_task(task_id: str, response: Response):\n    if task_id not in tasks:\n        tasks[task_id] = \"This didn't exist before\"\n        response.status_code = status.HTTP_201_CREATED\n    return tasks[task_id]\n```\n[2]\n\nCe besoin apparaît notamment lorsqu'on veut renvoyer `200` par défaut mais `201` lors d'une création [1][3]."
+      },
+      {
+        "id": "q07",
+        "question": "Comment recevoir un fichier envoyé par l'utilisateur ?",
+        "should_answer": true,
+        "refused": false,
+        "refused_by": null,
+        "correct_decision": true,
+        "citations": {
+          "found": [
+            1,
+            3,
+            2
+          ],
+          "valid": [
+            1,
+            3,
+            2
+          ],
+          "invalid": []
+        },
+        "warnings": [],
+        "seconds": 3.36,
+        "cached": false,
+        "answer": "Pour recevoir un fichier envoyé par le client, il faut utiliser `File` (ou `UploadFile`) comme paramètre de la fonction de path operation. Il faut d'abord installer `python-multipart`, car les fichiers sont envoyés sous forme de « form data » [1].\n\nAvec `UploadFile`, l'objet expose notamment `filename`, `content_type` et `file` (un objet fichier) [3]. Les méthodes `read`, `write`, `seek` et `close` sont asynchrones et doivent être attendues avec `await` dans une fonction `async` (par exemple `contents = await myfile.read()`). Dans une fonction `def` classique, on peut accéder directement à `myfile.file.read()` [2][3]."
+      },
+      {
+        "id": "q08",
+        "question": "Comment lire les champs d'un formulaire HTML ?",
+        "should_answer": true,
+        "refused": false,
+        "refused_by": null,
+        "correct_decision": true,
+        "citations": {
+          "found": [
+            3
+          ],
+          "valid": [
+            3
+          ],
+          "invalid": []
+        },
+        "warnings": [],
+        "seconds": 1.922,
+        "cached": false,
+        "answer": "Selon le passage [3], on déclare un **modèle Pydantic** contenant les champs attendus comme champs de formulaire, puis on déclare le paramètre avec `Form()` (via `Annotated`). FastAPI extrait alors automatiquement la valeur de chaque champ depuis les données du formulaire de la requête et fournit le modèle défini.\n\nExemple :\n\n```python\nclass FormData(BaseModel):\n    username: str\n    password: str\n\n@app.post(\"/login/\")\nasync def login(data: Annotated[FormData, Form()]):\n    return data\n```\n\nPour les cases à cocher HTML, on déclare des champs booléens avec une valeur par défaut `False` [3]."
+      },
+      {
+        "id": "q09",
+        "question": "Comment partager du code entre plusieurs routes avec une dépendance ?",
+        "should_answer": true,
+        "refused": false,
+        "refused_by": null,
+        "correct_decision": true,
+        "citations": {
+          "found": [
+            2,
+            3,
+            1
+          ],
+          "valid": [
+            2,
+            3,
+            1
+          ],
+          "invalid": []
+        },
+        "warnings": [],
+        "seconds": 1.511,
+        "cached": false,
+        "answer": "Pour partager du code entre plusieurs routes, déclarez la dépendance une seule fois, par exemple dans un alias `Annotated`, puis réutilisez cet alias dans chaque route. FastAPI se charge alors d'appeler le code partagé pour chaque *path operation* [2][3].\n\nPour partager aussi une limite de concurrence, réutilisez le même objet `Depends()`. Si vous écrivez un nouveau `Depends(get_session, max_concurrency=5)` pour chaque route, chacune aura sa propre limite [1]."
+      },
+      {
+        "id": "q10",
+        "question": "Comment protéger une route avec un jeton JWT ?",
+        "should_answer": true,
+        "refused": false,
+        "refused_by": null,
+        "correct_decision": true,
+        "citations": {
+          "found": [],
+          "valid": [],
+          "invalid": []
+        },
+        "warnings": [
+          "answer contains no valid citation"
+        ],
+        "seconds": 1.368,
+        "cached": false,
+        "answer": "Les passages fournis ne décrivent pas comment protéger une route avec un jeton JWT (la vérification du jeton sur une route). Ils couvrent uniquement la création du jeton : le claim `sub`, la durée d'expiration, la génération du jeton, la clé secrète et l'algorithme `HS256`.\n\nJe ne sais pas."
+      },
+      {
+        "id": "q11",
+        "question": "Comment autoriser un site web d'une autre origine à appeler mon API ?",
+        "should_answer": true,
+        "refused": false,
+        "refused_by": null,
+        "correct_decision": true,
+        "citations": {
+          "found": [
+            1
+          ],
+          "valid": [
+            1
+          ],
+          "invalid": []
+        },
+        "warnings": [],
+        "seconds": 2.028,
+        "cached": false,
+        "answer": "Pour autoriser un site d'une autre origine à appeler votre API FastAPI, utilisez le `CORSMiddleware` [1] :\n\n1. Importez `CORSMiddleware` depuis `fastapi.middleware.cors` [1].\n2. Créez une liste des origines autorisées sous forme de chaînes de caractères [1].\n3. Ajoutez le middleware à votre application avec `app.add_middleware(...)`, en passant la liste via le paramètre `allow_origins` [1].\n\nVous pouvez aussi préciser si les credentials (en-têtes Authorization, cookies, etc.) sont autorisés, ainsi que les méthodes HTTP (`allow_methods`) et les en-têtes HTTP (`allow_headers`) acceptés, ou tous via le joker `\"*\"` [1].\n\nLes paramètres par défaut sont restrictifs : il faut donc activer explicitement les origines, méthodes et en-têtes nécessaires pour que le navigateur autorise les requêtes inter-origines [1]."
+      },
+      {
+        "id": "q12",
+        "question": "Comment exécuter une tâche après avoir renvoyé la réponse ?",
+        "should_answer": true,
+        "refused": false,
+        "refused_by": null,
+        "correct_decision": true,
+        "citations": {
+          "found": [
+            1
+          ],
+          "valid": [
+            1
+          ],
+          "invalid": []
+        },
+        "warnings": [],
+        "seconds": 1.378,
+        "cached": false,
+        "answer": "Il faut utiliser les **tâches en arrière-plan** : elles sont exécutées *après* l'envoi de la réponse, ce qui est utile pour des opérations lentes (par exemple l'envoi d'un e-mail) dont le client n'a pas besoin d'attendre la fin. On peut aussi renvoyer une réponse \"Accepted\" (HTTP 202) et traiter le fichier en arrière-plan [1]."
+      },
+      {
+        "id": "q13",
+        "question": "Comment écrire des tests automatiques pour mon application ?",
+        "should_answer": true,
+        "refused": false,
+        "refused_by": null,
+        "correct_decision": true,
+        "citations": {
+          "found": [
+            1,
+            2,
+            3
+          ],
+          "valid": [
+            1,
+            2,
+            3
+          ],
+          "invalid": []
+        },
+        "warnings": [],
+        "seconds": 1.887,
+        "cached": false,
+        "answer": "Les passages fournis ne décrivent pas en détail comment écrire des tests automatiques, mais ils donnent quelques éléments :\n\n- Pour tester une application FastAPI, on peut organiser le projet avec l'application principale dans `app/main.py` [1].\n- Pour remplacer une dépendance pendant les tests, on utilise l'attribut `app.dependency_overrides`, un simple dictionnaire dont la clé est la dépendance d'origine (une fonction) et la valeur la dépendance de remplacement (une autre fonction) [2].\n- La documentation recommande d'ajouter des tests à votre application, notamment avant de mettre à jour la version de FastAPI, afin de vérifier que tout fonctionne correctement [3].\n\nLes passages ne montrent pas d'exemple complet d'écriture de test, je ne peux donc pas aller plus loin à partir de ces seules sources."
+      },
+      {
+        "id": "q14",
+        "question": "Comment organiser une grosse application en plusieurs fichiers ?",
+        "should_answer": true,
+        "refused": false,
+        "refused_by": null,
+        "correct_decision": true,
+        "citations": {
+          "found": [
+            1,
+            2,
+            3
+          ],
+          "valid": [
+            1,
+            2,
+            3
+          ],
+          "invalid": []
+        },
+        "warnings": [],
+        "seconds": 2.257,
+        "cached": false,
+        "answer": "Pour organiser une grosse application FastAPI en plusieurs fichiers, on utilise `APIRouter`. Les *path operations* liées à un domaine (par exemple les utilisateurs) sont placées dans un sous-module séparé, comme `/app/routers/users.py`, tout en faisant toujours partie de la même application FastAPI [1][2]. Les paramètres `prefix`, `tags`, `responses` et `dependencies` permettent d'éviter la duplication de code [3]."
+      },
+      {
+        "id": "q15",
+        "question": "Comment servir des fichiers statiques comme des images ?",
+        "should_answer": true,
+        "refused": false,
+        "refused_by": null,
+        "correct_decision": true,
+        "citations": {
+          "found": [
+            1,
+            2
+          ],
+          "valid": [
+            1,
+            2
+          ],
+          "invalid": []
+        },
+        "warnings": [],
+        "seconds": 1.571,
+        "cached": false,
+        "answer": "Utilisez `StaticFiles` : importez-le depuis `fastapi.staticfiles`, puis montez une instance de `StaticFiles()` sur un chemin donné avec `app.mount()` [1] :\n\n```python\nfrom fastapi import FastAPI\nfrom fastapi.staticfiles import StaticFiles\n\napp = FastAPI()\n\napp.mount(\"/static\", StaticFiles(directory=\"static\"), name=\"static\")\n```\n\nLes fichiers du dossier `static` (par exemple des images) seront alors accessibles via l'URL `/static/...` [1]. Pour héberger un frontend, `app.frontend()` est recommandé, car il repose sur `StaticFiles` et gère en plus le routage côté client [2]."
+      },
+      {
+        "id": "q16",
+        "question": "Comment connecter mon application à une base de données SQL ?",
+        "should_answer": true,
+        "refused": false,
+        "refused_by": null,
+        "correct_decision": true,
+        "citations": {
+          "found": [
+            1,
+            2
+          ],
+          "valid": [
+            1,
+            2
+          ],
+          "invalid": []
+        },
+        "warnings": [],
+        "seconds": 1.596,
+        "cached": false,
+        "answer": "Les passages fournis n'expliquent pas en détail comment connecter l'application à une base de données SQL. Ils montrent seulement comment installer SQLModel [1], comment créer les tables au démarrage de l'application via un événement `startup` [2], et qu'en production on utiliserait plutôt un script de migration, Alembic pouvant être utilisé directement [2]. Je ne sais pas comment configurer la connexion elle-même à partir de ces seuls passages."
+      },
+      {
+        "id": "q17",
+        "question": "Comment ajouter un middleware exécuté à chaque requête ?",
+        "should_answer": true,
+        "refused": false,
+        "refused_by": null,
+        "correct_decision": true,
+        "citations": {
+          "found": [
+            2
+          ],
+          "valid": [
+            2
+          ],
+          "invalid": []
+        },
+        "warnings": [],
+        "seconds": 2.456,
+        "cached": false,
+        "answer": "Pour ajouter un middleware exécuté à chaque requête, on utilise le décorateur `@app.middleware(\"http\")` placé au-dessus d'une fonction asynchrone. Cette fonction reçoit la `request` et une fonction `call_next`, qui transmet la requête à la *path operation* correspondante et renvoie la `response` générée. On peut ensuite modifier cette réponse avant de la retourner [2].\n\nExemple :\n\n```python\n@app.middleware(\"http\")\nasync def mon_middleware(request: Request, call_next):\n    response = await call_next(request)\n    return response\n```\n\n[2]"
+      },
+      {
+        "id": "q18",
+        "question": "Comment limiter les champs renvoyés dans la réponse ?",
+        "should_answer": true,
+        "refused": false,
+        "refused_by": null,
+        "correct_decision": true,
+        "citations": {
+          "found": [
+            1,
+            2,
+            3
+          ],
+          "valid": [
+            1,
+            2,
+            3
+          ],
+          "invalid": []
+        },
+        "warnings": [],
+        "seconds": 2.878,
+        "cached": false,
+        "answer": "Selon les passages fournis, on peut limiter les champs renvoyés de plusieurs façons :\n\n- Utiliser le paramètre `response_model` du décorateur de l'opération de chemin pour définir le modèle de réponse et filtrer les données privées [1].\n- Utiliser `response_model_exclude_unset` pour ne renvoyer que les valeurs explicitement définies [1].\n- Utiliser `response_model_include` (pour ne garder que certains attributs) ou `response_model_exclude` (pour en retirer certains). Ces paramètres prennent un `set` de `str` contenant les noms des attributs [2].\n\nLe passage [2] précise toutefois qu'il est recommandé d'utiliser plusieurs classes plutôt que `response_model_include` et `response_model_exclude`, car le schéma JSON généré dans la documentation OpenAPI reste celui du modèle complet [2].\n\nLe passage [3] indique que `response_model` limite et filtre les données de sortie à ce qui est défini dans le type de retour, ce qui est important pour la sécurité [3]."
+      },
+      {
+        "id": "q19",
+        "question": "Quelle est la différence entre def et async def pour une route ?",
+        "should_answer": true,
+        "refused": false,
+        "refused_by": null,
+        "correct_decision": true,
+        "citations": {
+          "found": [
+            2,
+            1
+          ],
+          "valid": [
+            2,
+            1
+          ],
+          "invalid": []
+        },
+        "warnings": [],
+        "seconds": 1.755,
+        "cached": false,
+        "answer": "Avec `def` normal, la fonction de route est exécutée dans un threadpool externe, qui est ensuite attendu, au lieu d'être appelée directement (ce qui bloquerait le serveur) [2]. Avec `async def`, la fonction est exécutée directement dans la boucle d'événements. Il est donc préférable d'utiliser `async def` pour les fonctions de route qui n'effectuent que du calcul, et `def` lorsque le code effectue des entrées/sorties bloquantes [2].\n\nPar ailleurs, il est possible de mélanger les deux : des dépendances `async def` peuvent être utilisées dans des routes `def`, et inversement. **FastAPI** gère automatiquement la différence [1]."
+      },
+      {
+        "id": "q20",
+        "question": "Comment lire un en-tête HTTP personnalisé ?",
+        "should_answer": true,
+        "refused": false,
+        "refused_by": null,
+        "correct_decision": true,
+        "citations": {
+          "found": [
+            2
+          ],
+          "valid": [
+            2
+          ],
+          "invalid": []
+        },
+        "warnings": [],
+        "seconds": 1.555,
+        "cached": false,
+        "answer": "Pour lire un en-tête HTTP personnalisé avec FastAPI, on utilise `Header` : les noms de paramètres en snake_case sont automatiquement convertis (underscores → tirets) pour extraire l'en-tête, et la casse est ignorée [2]. Par exemple, `user_agent` correspond à l'en-tête `user-agent`.\n\nSi vous ne voulez pas cette conversion, passez `convert_underscores=False` à `Header` [2]. Attention : certains proxys et serveurs HTTP refusent les en-têtes contenant des underscores [2]."
+      },
+      {
+        "id": "u01",
+        "question": "Comment installer PostgreSQL sur Ubuntu ?",
+        "should_answer": false,
+        "refused": true,
+        "refused_by": "model",
+        "correct_decision": true,
+        "citations": {
+          "found": [],
+          "valid": [],
+          "invalid": []
+        },
+        "warnings": [],
+        "seconds": 0.035,
+        "cached": true,
+        "answer": "Je ne sais pas."
+      },
+      {
+        "id": "u02",
+        "question": "Comment créer une nouvelle branche avec Git ?",
+        "should_answer": false,
+        "refused": true,
+        "refused_by": "threshold",
+        "correct_decision": true,
+        "citations": {
+          "found": [],
+          "valid": [],
+          "invalid": []
+        },
+        "warnings": [],
+        "seconds": 0.035,
+        "cached": false,
+        "answer": "Je ne sais pas."
+      },
+      {
+        "id": "u03",
+        "question": "Comment entraîner un modèle de classification avec scikit-learn ?",
+        "should_answer": false,
+        "refused": true,
+        "refused_by": "model",
+        "correct_decision": true,
+        "citations": {
+          "found": [],
+          "valid": [],
+          "invalid": []
+        },
+        "warnings": [],
+        "seconds": 2.848,
+        "cached": false,
+        "answer": "Je ne sais pas."
+      },
+      {
+        "id": "u04",
+        "question": "Quelle est la capitale de l'Australie ?",
+        "should_answer": false,
+        "refused": true,
+        "refused_by": "threshold",
+        "correct_decision": true,
+        "citations": {
+          "found": [],
+          "valid": [],
+          "invalid": []
+        },
+        "warnings": [],
+        "seconds": 0.033,
+        "cached": false,
+        "answer": "Je ne sais pas."
+      },
+      {
+        "id": "u05",
+        "question": "Combien coûte un abonnement GitHub Copilot par mois ?",
+        "should_answer": false,
+        "refused": true,
+        "refused_by": "threshold",
+        "correct_decision": true,
+        "citations": {
+          "found": [],
+          "valid": [],
+          "invalid": []
+        },
+        "warnings": [],
+        "seconds": 0.038,
+        "cached": false,
+        "answer": "Je ne sais pas."
+      }
+    ],
+    "v2": [
+      {
+        "id": "q01",
+        "question": "Comment récupérer un paramètre dans l'URL comme /items/42 ?",
+        "should_answer": true,
+        "refused": false,
+        "refused_by": null,
+        "correct_decision": true,
+        "citations": {
+          "found": [
+            1,
+            2,
+            3
+          ],
+          "valid": [
+            1,
+            2,
+            3
+          ],
+          "invalid": []
+        },
+        "warnings": [],
+        "seconds": 2.011,
+        "cached": false,
+        "answer": "Les passages fournis ne couvrent pas les paramètres de chemin (path parameters) tels que `/items/42` : ils traitent uniquement des paramètres de requête (query parameters), comme `?skip=20`, et de l'alias de paramètres [1][2][3]. Le passage [1] mentionne un lien vers les paramètres de chemin, mais son contenu n'est pas inclus. Je ne sais pas comment déclarer et récupérer un paramètre directement dans le chemin de l'URL à partir de ces extraits. Je vous conseille de consulter la section « Path Parameters » de la documentation officielle de FastAPI."
+      },
+      {
+        "id": "q02",
+        "question": "Comment déclarer un paramètre de requête optionnel ?",
+        "should_answer": true,
+        "refused": false,
+        "refused_by": null,
+        "correct_decision": true,
+        "citations": {
+          "found": [
+            1,
+            3
+          ],
+          "valid": [
+            1,
+            3
+          ],
+          "invalid": []
+        },
+        "warnings": [],
+        "seconds": 2.037,
+        "cached": false,
+        "answer": "Pour déclarer un paramètre de requête optionnel, il suffit de lui donner la valeur par défaut `None` dans la signature de la fonction de l'opération de chemin. Par exemple, `q: str | None = None` rend `q` facultatif, et sa valeur vaut `None` lorsqu'il n'est pas fourni [1]. FastAPI détecte automatiquement qu'un paramètre qui ne figure pas dans le chemin est un paramètre de requête [1]. Pour rendre optionnel un ensemble de paramètres regroupés dans un modèle, on déclare le modèle avec `| None` et la valeur par défaut `None` dans un paramètre annoté `Query()` [3]."
+      },
+      {
+        "id": "q03",
+        "question": "Comment envoyer des données JSON dans le corps d'une requête ?",
+        "should_answer": true,
+        "refused": false,
+        "refused_by": null,
+        "correct_decision": true,
+        "citations": {
+          "found": [
+            2,
+            3
+          ],
+          "valid": [
+            2,
+            3
+          ],
+          "invalid": []
+        },
+        "warnings": [],
+        "seconds": 2.798,
+        "cached": false,
+        "answer": "Pour envoyer un corps JSON dans une requête de test, il suffit de passer un objet Python (par exemple un `dict`) au paramètre `json` du client HTTPX ou du `TestClient` [2]. Si vous devez envoyer des données de formulaire plutôt que du JSON, on utilise le paramètre `data` à la place [2]. Notez que le `TestClient` accepte des données convertibles en JSON, et non directement des modèles Pydantic ; pour envoyer les données d'un modèle, il faut d'abord les convertir avec `jsonable_encoder` [2]. Pour documenter le format attendu du corps dans la documentation OpenAPI, on peut fournir un exemple avec `Body(examples=[...])` [3]."
+      },
+      {
+        "id": "q04",
+        "question": "Comment imposer une longueur minimale à un paramètre de requête ?",
+        "should_answer": true,
+        "refused": false,
+        "refused_by": null,
+        "correct_decision": true,
+        "citations": {
+          "found": [
+            1,
+            2
+          ],
+          "valid": [
+            1,
+            2
+          ],
+          "invalid": []
+        },
+        "warnings": [],
+        "seconds": 2.601,
+        "cached": false,
+        "answer": "Pour imposer une longueur minimale à un paramètre de requête, on ajoute `min_length` à l'objet `Query`, par exemple `Query(min_length=3, max_length=50)` dans une annotation `Annotated[str | None, ...]` [1]. On peut aussi combiner cette contrainte avec une valeur par défaut autre que `None`, comme `\"fixedquery\"` [2]. Une valeur par défaut, quelle qu'elle soit, rend le paramètre facultatif (non obligatoire) [2]."
+      },
+      {
+        "id": "q05",
+        "question": "Comment renvoyer une erreur 404 au client ?",
+        "should_answer": true,
+        "refused": false,
+        "refused_by": null,
+        "correct_decision": true,
+        "citations": {
+          "found": [
+            2,
+            1
+          ],
+          "valid": [
+            2,
+            1
+          ],
+          "invalid": []
+        },
+        "warnings": [],
+        "seconds": 0.037,
+        "cached": true,
+        "answer": "Pour renvoyer une erreur 404 au client, on utilise une `HTTPException` : elle permet de signaler une ressource inexistante, et FastAPI la convertit automatiquement en réponse JSON avec le code de statut correspondant [2]. Par exemple, si l'élément demandé n'existe pas, la réponse aura le statut 404 et un corps contenant un champ `detail` décrivant l'erreur, comme \"Item not found\" [2]. Le paramètre `detail` peut accepter n'importe quelle valeur convertible en JSON, pas seulement une chaîne de caractères [2]. Les codes de statut de la plage 400 indiquent une erreur côté client, et le 404 \"Not Found\" en fait partie [1]."
+      },
+      {
+        "id": "q06",
+        "question": "Comment changer le code de statut HTTP renvoyé par une route ?",
+        "should_answer": true,
+        "refused": false,
+        "refused_by": null,
+        "correct_decision": true,
+        "citations": {
+          "found": [
+            2,
+            1
+          ],
+          "valid": [
+            2,
+            1
+          ],
+          "invalid": []
+        },
+        "warnings": [],
+        "seconds": 2.927,
+        "cached": false,
+        "answer": "Pour renvoyer un code de statut différent de celui par défaut, vous pouvez déclarer un paramètre de type `Response` dans la fonction de chemin (comme pour les cookies et les en-têtes), puis définir son `status_code` [2]. Ce paramètre sert à modifier le code de statut dans un objet de réponse temporaire, par exemple pour renvoyer 201 au lieu de 200 lorsqu'une ressource est créée [1][2]. Vous pouvez ensuite retourner l'objet voulu, et si un `response_model` est déclaré, il continue de filtrer et convertir la valeur retournée [2]. Il est aussi possible de définir le code de statut dans des dépendances, mais c'est la dernière valeur définie qui l'emporte [2]."
+      },
+      {
+        "id": "q07",
+        "question": "Comment recevoir un fichier envoyé par l'utilisateur ?",
+        "should_answer": true,
+        "refused": false,
+        "refused_by": null,
+        "correct_decision": true,
+        "citations": {
+          "found": [
+            1,
+            3
+          ],
+          "valid": [
+            1,
+            3
+          ],
+          "invalid": []
+        },
+        "warnings": [],
+        "seconds": 2.822,
+        "cached": false,
+        "answer": "Pour recevoir un fichier envoyé par le client, on utilise `File` pour définir le paramètre de fichier. Il faut d'abord installer `python-multipart`, car les fichiers envoyés sont transmis comme des « données de formulaire » [1]. Les attributs de `UploadFile` incluent `filename` (le nom d'origine), `content_type` (le type MIME) et `file` (un objet de type fichier) [3]. Les méthodes `read`, `write`, `seek` et `close` sont asynchrones et doivent être utilisées avec `await` dans une fonction de chemin `async` [3]."
+      },
+      {
+        "id": "q08",
+        "question": "Comment lire les champs d'un formulaire HTML ?",
+        "should_answer": true,
+        "refused": false,
+        "refused_by": null,
+        "correct_decision": true,
+        "citations": {
+          "found": [
+            3,
+            1
+          ],
+          "valid": [
+            3,
+            1
+          ],
+          "invalid": []
+        },
+        "warnings": [],
+        "seconds": 1.934,
+        "cached": false,
+        "answer": "Selon le passage [3], on déclare un modèle Pydantic avec les champs attendus, puis on déclare le paramètre avec `Form()` : FastAPI extrait alors la valeur de chaque champ depuis les données du formulaire de la requête et fournit le modèle défini [3]. Dans l'exemple donné, la classe `FormData` contient les champs `username` et `password`, et la route `/login/` reçoit ces données via `data: Annotated[FormData, Form()]` [3]. Pour les cases à cocher HTML, le passage indique de déclarer des champs booléens avec une valeur par défaut `False` [3]. Le passage [1] mentionne par ailleurs qu'on peut vérifier le résultat dans l'interface de documentation à l'adresse `/docs`, mais il ne précise pas davantage la procédure [1]."
+      },
+      {
+        "id": "q09",
+        "question": "Comment partager du code entre plusieurs routes avec une dépendance ?",
+        "should_answer": true,
+        "refused": false,
+        "refused_by": null,
+        "correct_decision": true,
+        "citations": {
+          "found": [
+            2,
+            3,
+            1
+          ],
+          "valid": [
+            2,
+            3,
+            1
+          ],
+          "invalid": []
+        },
+        "warnings": [],
+        "seconds": 1.806,
+        "cached": false,
+        "answer": "Pour partager du code entre plusieurs routes, on déclare la dépendance une seule fois puis on la réutilise dans chaque route. FastAPI se charge ensuite d'appeler ce code pour vos *path operations* [2]. Pour réutiliser la même dépendance de façon claire dans un grand projet, on peut la placer dans un alias `Annotated` et l'utiliser dans de nombreuses routes [3]. Attention : si l'on partage la même limite de concurrence (par exemple `max_concurrency`), il faut réutiliser le même objet `Depends()`, car écrire un nouveau `Depends(...)` pour chaque route crée une limite indépendante pour chacune [1]."
+      },
+      {
+        "id": "q10",
+        "question": "Comment protéger une route avec un jeton JWT ?",
+        "should_answer": true,
+        "refused": true,
+        "refused_by": "model",
+        "correct_decision": false,
+        "citations": {
+          "found": [
+            1,
+            2,
+            3
+          ],
+          "valid": [
+            1,
+            2,
+            3
+          ],
+          "invalid": []
+        },
+        "warnings": [],
+        "seconds": 1.316,
+        "cached": false,
+        "answer": "Je ne sais pas.\n\nLes passages fournis expliquent comment générer et structurer un jeton JWT (le champ `sub`, la définition de `SECRET_KEY` et `ALGORITHM`, la création d'un jeton avec une durée d'expiration) [1][2][3], mais aucun ne décrit comment vérifier ce jeton sur une route protégée."
+      },
+      {
+        "id": "q11",
+        "question": "Comment autoriser un site web d'une autre origine à appeler mon API ?",
+        "should_answer": true,
+        "refused": false,
+        "refused_by": null,
+        "correct_decision": true,
+        "citations": {
+          "found": [
+            1
+          ],
+          "valid": [
+            1
+          ],
+          "invalid": []
+        },
+        "warnings": [],
+        "seconds": 2.636,
+        "cached": false,
+        "answer": "Pour autoriser un site d'une autre origine à appeler votre API FastAPI, il faut ajouter le middleware `CORSMiddleware` à votre application. Concrètement, on importe `CORSMiddleware`, on définit la liste des origines autorisées, puis on l'ajoute avec `app.add_middleware` [1]. Vous pouvez aussi préciser si les identifiants (en-têtes Authorization, cookies) sont acceptés, ainsi que les méthodes HTTP et les en-têtes autorisés, en utilisant le joker `\"*\"` pour tout autoriser [1]. Les paramètres par défaut étant restrictifs, il faut activer explicitement les origines, méthodes ou en-têtes voulus pour que les navigateurs puissent les utiliser en contexte inter-domaines [1]."
+      },
+      {
+        "id": "q12",
+        "question": "Comment exécuter une tâche après avoir renvoyé la réponse ?",
+        "should_answer": true,
+        "refused": false,
+        "refused_by": null,
+        "correct_decision": true,
+        "citations": {
+          "found": [
+            1,
+            3
+          ],
+          "valid": [
+            1,
+            3
+          ],
+          "invalid": []
+        },
+        "warnings": [],
+        "seconds": 1.772,
+        "cached": false,
+        "answer": "Selon la documentation, il est possible de définir des tâches d'arrière-plan qui s'exécutent *après* l'envoi de la réponse au client [1]. Cela est utile lorsque l'opération n'a pas besoin que le client attende sa fin, par exemple l'envoi d'un e-mail, qui peut prendre plusieurs secondes, ou le traitement d'un fichier lent, auquel cas on peut renvoyer une réponse « Accepted » (HTTP 202) [1]. Les tâches d'arrière-plan s'exécutent aussi après l'ensemble des middlewares [3]. Les passages fournis ne détaillent pas la syntaxe précise pour déclarer ces tâches."
+      },
+      {
+        "id": "q13",
+        "question": "Comment écrire des tests automatiques pour mon application ?",
+        "should_answer": true,
+        "refused": false,
+        "refused_by": null,
+        "correct_decision": true,
+        "citations": {
+          "found": [
+            1,
+            2,
+            3
+          ],
+          "valid": [
+            1,
+            2,
+            3
+          ],
+          "invalid": []
+        },
+        "warnings": [],
+        "seconds": 2.074,
+        "cached": false,
+        "answer": "Les passages fournis permettent seulement de répondre partiellement. Pour tester une application FastAPI, la documentation indique qu'il faut d'abord structurer le projet, par exemple avec un fichier `app/main.py` contenant l'objet `app = FastAPI()` [1]. Pour remplacer une dépendance pendant les tests, on utilise l'attribut `app.dependency_overrides`, un dictionnaire dont la clé est la dépendance d'origine et la valeur la fonction de remplacement [2]. La documentation précise aussi qu'il est recommandé d'ajouter des tests avant de mettre à jour la version de FastAPI, afin de vérifier que tout fonctionne, puis de figer la version une fois les tests passés [3]. En revanche, les passages ne montrent pas comment écrire concrètement un test (client de test, assertions, etc.) : pour cela, je ne sais pas."
+      },
+      {
+        "id": "q14",
+        "question": "Comment organiser une grosse application en plusieurs fichiers ?",
+        "should_answer": true,
+        "refused": false,
+        "refused_by": null,
+        "correct_decision": true,
+        "citations": {
+          "found": [
+            1,
+            2,
+            3
+          ],
+          "valid": [
+            1,
+            2,
+            3
+          ],
+          "invalid": []
+        },
+        "warnings": [],
+        "seconds": 1.639,
+        "cached": false,
+        "answer": "Pour organiser une grosse application FastAPI, on peut répartir le code dans plusieurs fichiers : par exemple, les *path operations* liées aux utilisateurs peuvent être séparées dans un sous-module comme `/app/routers/users.py`, tout en restant dans la même application [1][2]. Pour cela, on crée les opérations de chemin de ce module à l'aide d'`APIRouter` [2]. FastAPI fournit cet outil pour structurer l'application tout en conservant sa flexibilité, et l'équivalent dans Flask serait les Blueprints [1]. Les paramètres `prefix`, `tags`, `responses` et `dependencies` servent principalement à éviter la duplication de code [3]."
+      },
+      {
+        "id": "q15",
+        "question": "Comment servir des fichiers statiques comme des images ?",
+        "should_answer": true,
+        "refused": false,
+        "refused_by": null,
+        "correct_decision": true,
+        "citations": {
+          "found": [
+            1,
+            2,
+            3
+          ],
+          "valid": [
+            1,
+            2,
+            3
+          ],
+          "invalid": []
+        },
+        "warnings": [],
+        "seconds": 1.891,
+        "cached": false,
+        "answer": "Pour servir des fichiers statiques comme des images avec FastAPI, on utilise `StaticFiles` : il suffit de l'importer depuis `fastapi.staticfiles` puis de « monter » une instance de `StaticFiles()` sur un chemin donné, par exemple avec `app.mount(\"/static\", StaticFiles(directory=\"static\"), name=\"static\")` [1]. Les fichiers du dossier `static` sont alors servis automatiquement automatiquement sous le préfixe `/static` [1][2]. Pour davantage d'options, la documentation renvoie vers celle de Starlette sur les fichiers statiques [3]. Si vous devez héberger un frontend, la documentation recommande plutôt `app.frontend()`, qui utilise `StaticFiles` en interne et gère en plus le routage côté client [2]."
+      },
+      {
+        "id": "q16",
+        "question": "Comment connecter mon application à une base de données SQL ?",
+        "should_answer": true,
+        "refused": false,
+        "refused_by": null,
+        "correct_decision": true,
+        "citations": {
+          "found": [
+            1,
+            2
+          ],
+          "valid": [
+            1,
+            2
+          ],
+          "invalid": []
+        },
+        "warnings": [],
+        "seconds": 1.907,
+        "cached": false,
+        "answer": "Les passages fournis n'expliquent pas en détail comment connecter une application à une base de données SQL. Ils indiquent seulement qu'il faut installer la bibliothèque `sqlmodel` avec `uv add sqlmodel` [1]. Ils montrent aussi qu'on peut créer les tables au démarrage de l'application, via un événement `startup` qui appelle `create_db_and_tables()` [2]. Le passage précise enfin que, en production, on utiliserait plutôt un script de migration, et qu'Alembic peut être utilisé directement [2]. La configuration de la connexion elle-même (URL de la base, moteur, session) ne figure pas dans ces extraits : Je ne sais pas."
+      },
+      {
+        "id": "q17",
+        "question": "Comment ajouter un middleware exécuté à chaque requête ?",
+        "should_answer": true,
+        "refused": false,
+        "refused_by": null,
+        "correct_decision": true,
+        "citations": {
+          "found": [
+            2,
+            1
+          ],
+          "valid": [
+            2,
+            1
+          ],
+          "invalid": []
+        },
+        "warnings": [],
+        "seconds": 1.495,
+        "cached": false,
+        "answer": "Pour ajouter un middleware exécuté à chaque requête dans FastAPI, on utilise le décorateur `@app.middleware(\"http\")` placé au-dessus d'une fonction asynchrone. Cette fonction reçoit la `request` et une fonction `call_next`, qui transmet la requête à la *path operation* correspondante et renvoie la réponse générée [2]. Le middleware peut ensuite modifier cette réponse avant de la retourner, par exemple en ajoutant un en-tête personnalisé [2]. Le middleware traite chaque requête reçue par l'application avant qu'elle n'atteigne une *path operation* spécifique [1]."
+      },
+      {
+        "id": "q18",
+        "question": "Comment limiter les champs renvoyés dans la réponse ?",
+        "should_answer": true,
+        "refused": false,
+        "refused_by": null,
+        "correct_decision": true,
+        "citations": {
+          "found": [
+            1,
+            3,
+            2
+          ],
+          "valid": [
+            1,
+            3,
+            2
+          ],
+          "invalid": []
+        },
+        "warnings": [],
+        "seconds": 2.396,
+        "cached": false,
+        "answer": "Pour limiter les champs renvoyés, FastAPI propose d'utiliser le paramètre `response_model` du décorateur de *path operation*, qui permet de filtrer les données de sortie pour ne garder que ce qui est défini dans le type de retour, ce qui est particulièrement important pour la sécurité [1][3]. Le paramètre `response_model_exclude_unset` permet quant à lui de ne renvoyer que les valeurs explicitement définies [1]. Il existe aussi `response_model_include` et `response_model_exclude`, qui acceptent un ensemble de noms d'attributs à inclure ou à exclure, mais la documentation recommande plutôt d'utiliser plusieurs classes de modèles, car le schéma JSON généré dans OpenAPI reste celui du modèle complet [2]."
+      },
+      {
+        "id": "q19",
+        "question": "Quelle est la différence entre def et async def pour une route ?",
+        "should_answer": true,
+        "refused": false,
+        "refused_by": null,
+        "correct_decision": true,
+        "citations": {
+          "found": [
+            2,
+            1,
+            3
+          ],
+          "valid": [
+            2,
+            1,
+            3
+          ],
+          "invalid": []
+        },
+        "warnings": [],
+        "seconds": 2.9,
+        "cached": false,
+        "answer": "Selon la documentation, une fonction de *path operation* déclarée avec `def` normal est exécutée dans un threadpool externe, sur lequel le serveur attend, au lieu d'être appelée directement, ce qui éviterait de bloquer le serveur [2]. À l'inverse, une fonction déclarée avec `async def` est appelée directement. La documentation indique que, dans FastAPI, il vaut généralement mieux utiliser `async def` pour des fonctions de calcul simple, sauf si la fonction effectue des opérations d'entrée/sortie bloquantes [2]. Par ailleurs, FastAPI accepte les deux syntaxes et peut combiner librement `async def` et `def` pour les routes et les dépendances [1]. En revanche, les passages fournis ne détaillent pas davantage le fonctionnement interne de `async`/`await` ; pour cela, il faudrait consulter la section correspondante de la documentation [3]."
+      },
+      {
+        "id": "q20",
+        "question": "Comment lire un en-tête HTTP personnalisé ?",
+        "should_answer": true,
+        "refused": false,
+        "refused_by": null,
+        "correct_decision": true,
+        "citations": {
+          "found": [
+            2,
+            1,
+            3
+          ],
+          "valid": [
+            2,
+            1,
+            3
+          ],
+          "invalid": []
+        },
+        "warnings": [],
+        "seconds": 1.85,
+        "cached": false,
+        "answer": "Le passage [2] explique que `Header` convertit automatiquement les underscores en traits d'union pour extraire les en-têtes, et que les noms peuvent être écrits en style snake_case (par exemple `user_agent`) puisque les en-têtes HTTP sont insensibles à la casse [2]. Pour désactiver cette conversion, il faut passer `convert_underscores=False` à `Header`, comme dans l'exemple fourni [2]. Il est toutefois signalé que certains proxys et serveurs HTTP refusent les en-têtes contenant des underscores, ce qui justifie de ne pas désactiver la conversion à la légère [2]. Les passages [1] et [3] traitent du streaming de données et ne sont pas pertinents pour cette question."
+      },
+      {
+        "id": "u01",
+        "question": "Comment installer PostgreSQL sur Ubuntu ?",
+        "should_answer": false,
+        "refused": true,
+        "refused_by": "model",
+        "correct_decision": true,
+        "citations": {
+          "found": [],
+          "valid": [],
+          "invalid": []
+        },
+        "warnings": [],
+        "seconds": 1.277,
+        "cached": false,
+        "answer": "Je ne sais pas.\n\nLes passages fournis ne couvrent que l'installation de FastAPI (avec `uv add \"fastapi[standard]\"`) et du serveur Uvicorn, et ne contiennent aucune information sur PostgreSQL ni sur son installation sous Ubuntu."
+      },
+      {
+        "id": "u02",
+        "question": "Comment créer une nouvelle branche avec Git ?",
+        "should_answer": false,
+        "refused": true,
+        "refused_by": "threshold",
+        "correct_decision": true,
+        "citations": {
+          "found": [],
+          "valid": [],
+          "invalid": []
+        },
+        "warnings": [],
+        "seconds": 0.043,
+        "cached": false,
+        "answer": "Je ne sais pas."
+      },
+      {
+        "id": "u03",
+        "question": "Comment entraîner un modèle de classification avec scikit-learn ?",
+        "should_answer": false,
+        "refused": true,
+        "refused_by": "model",
+        "correct_decision": true,
+        "citations": {
+          "found": [
+            1,
+            2,
+            3
+          ],
+          "valid": [
+            1,
+            2,
+            3
+          ],
+          "invalid": []
+        },
+        "warnings": [],
+        "seconds": 1.556,
+        "cached": false,
+        "answer": "Je ne sais pas.\n\nLes passages fournis concernent uniquement la définition de paramètres de chemin avec des valeurs prédéfinies (classes `Enum` / `StrEnum`) dans FastAPI [1][2], ainsi que la gestion du cycle de vie de l'application avec `lifespan` [3]. Aucun d'entre eux ne traite de scikit-learn ni de l'entraînement d'un modèle de classification, donc je ne peux pas répondre à cette question à partir de ces documents."
+      },
+      {
+        "id": "u04",
+        "question": "Quelle est la capitale de l'Australie ?",
+        "should_answer": false,
+        "refused": true,
+        "refused_by": "threshold",
+        "correct_decision": true,
+        "citations": {
+          "found": [],
+          "valid": [],
+          "invalid": []
+        },
+        "warnings": [],
+        "seconds": 0.033,
+        "cached": false,
+        "answer": "Je ne sais pas."
+      },
+      {
+        "id": "u05",
+        "question": "Combien coûte un abonnement GitHub Copilot par mois ?",
+        "should_answer": false,
+        "refused": true,
+        "refused_by": "threshold",
+        "correct_decision": true,
+        "citations": {
+          "found": [],
+          "valid": [],
+          "invalid": []
+        },
+        "warnings": [],
+        "seconds": 0.04,
+        "cached": false,
+        "answer": "Je ne sais pas."
+      }
+    ]
+  }
+}
