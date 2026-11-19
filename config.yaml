@@ -76,3 +76,13 @@ cache:                                       # the brief asks for a response cac
 prompt:                                      # the instructions sent with every question
   dir: "prompts"                             # folder holding the versions, tracked in Git as the brief requires
   version: "v2"                              # Phase 6: v2 refused 1 real question but every answer it gave was cited (19/19 vs 19/20)
+
+
+monitoring:
+  enabled: true                       # record every answered question
+  database: "data/monitoring.sqlite"  # lives in data/, which .gitignore already excludes
+  store_questions: true               # set to false to keep question text out of the database  
+
+api:
+  base_url: "http://127.0.0.1:8000"   # where the interface finds the API
+  timeout_seconds: 120                # long enough for a slow model call

@@ -2,6 +2,7 @@
 
 from __future__ import annotations                            # lets us write modern type hints safely
 
+import sqlite3                                                 # so we can catch monitoring database errors
 from contextlib import asynccontextmanager                     # lets us run setup code once, at startup
 
 from fastapi import FastAPI, HTTPException, Request            # the web framework and its error type
@@ -12,6 +13,7 @@ from assistant.core.chain import answer_question               # the full questi
 from assistant.core.embeddings import get_embedder             # the embedding model
 from assistant.core.llm import LLMError                        # raised when the model cannot be reached
 from assistant.core.vector_store import collection_name, open_client, open_collection   # database helpers
+from assistant.monitoring.logger import log_request, read_rows, summarise                # usage statistics                         # usage statistics
 
 
 class Question(BaseModel):                                     # what a caller must send us
@@ -78,12 +80,25 @@ def health(request: Request) -> dict:
     }
 
 
+@app.get("/stats")                                             # the numbers the statistics page shows
+def stats(request: Request) -> dict:
+    """Report how the assistant has behaved across every question it has answered."""
+    config = request.app.state.config                          # the settings loaded at startup
+    return summarise(config)                                   # totals, refusal rate, timings, cache rate
+
+
+@app.get("/recent")                                            # the table at the bottom of that page
+def recent(request: Request, limit: int = 50) -> list[dict]:
+    """Return the most recently answered questions, newest first."""
+    return read_rows(request.app.state.config, limit)          # straight from the monitoring database
+
 @app.post("/question", response_model=Answer)                  # the endpoint the brief asks for
 def ask(payload: Question, request: Request) -> dict:
     """Answer one question, returning the answer, its sources and the time taken."""
+    config = request.app.state.config                          # the settings loaded at startup
     try:                                                       # the chain can fail in two expected ways
-        return answer_question(                                # run the same chain the command line uses
-            request.app.state.config,                          # the settings
+        result = answer_question(                              # run the same chain the command line uses
+            config,                                            # the settings
             request.app.state.model,                           # the embedding model, already loaded
             request.app.state.collection,                      # the passages, already open
             payload.question,                                  # what the caller asked
@@ -93,3 +108,8 @@ def ask(payload: Question, request: Request) -> dict:
         raise HTTPException(status_code=400, detail=str(error))          # that is the caller's mistake
     except LLMError as error:                                  # the model is down, rate limited or misconfigured
         raise HTTPException(status_code=503, detail=f"the language model is unavailable: {error}")
+    try:                                                       # recording must never destroy a good answer
+        log_request(config, result, payload.prompt_version or config["prompt"]["version"])
+    except sqlite3.Error as error:                             # a locked or unwritable database, for example
+        result["warnings"] = result["warnings"] + [f"monitoring failed: {error}"]   # say so, do not crash
+    return result                                              # the answer goes back either way
