@@ -64,9 +64,8 @@ llm:                                         # the model that writes the answer
   max_tokens: 600                            # longest answer we allow, to control cost and rambling
   timeout_seconds: 60                        # give up on a single request after this long
   max_retries: 3                             # how many times to retry a rate limit or server error
-  local_model: "Qwen/Qwen3-0.6B"    
-  reasoning: false                           # do not spend the token budget on internal reasoning; we want the answer         # small open model, strong French for its size, runs on CPU
-
+  local_model: "Qwen/Qwen3-0.6B"             # Phase 4: refused all 5 test questions; kept so the local route stays available
+  reasoning: false                           # do not spend the token budget on internal reasoning; we want the answer
 
 cache:                                       # the brief asks for a response cache
   enabled: true                              # on by default
